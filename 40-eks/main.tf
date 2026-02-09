@@ -1,3 +1,8 @@
+resource "aws_key_pair" "eks" {
+  key_name   = "expense-eks"
+  public_key = file("C:/Users/Welceme/.ssh/eks.pub")
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.0" # this is module version
@@ -15,7 +20,8 @@ module "eks" {
     vpc-cni = {
       before_compute = true
     }
-    metrics-server = {}
+    # aws-ebs-csi-driver     = {}
+    # aws-efs-csi-driver     = {}
   }
 
   endpoint_public_access                   = false
@@ -36,6 +42,7 @@ module "eks" {
       ami_type           = "AL2023_x86_64_STANDARD"
       kubernetes_version = "1.31"
       instance_types     = ["m5.xlarge"]
+      key_name           = aws_key_pair.eks.key_name
       iam_role_additional_policies = {
         amazonEFS = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
         amazonEBS = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
@@ -62,8 +69,9 @@ module "eks" {
     /*  green = {
       create = true
       ami_type       = "AL2023_x86_64_STANDARD"
-      #kubernetes_version = 1.31
+      #kubernetes_version = "1.31"
       instance_types = ["m5.xlarge"]
+      key_name           = aws_key_pair.eks.key_name
       iam_role_additional_policies  = {
         amazonEFS = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
         amazonEBS = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
