@@ -10,3 +10,7 @@ data "aws_ssm_parameter" "database_subnet_group_name" {
   name = "/${var.project_name}/${var.environment}/database_subnet_group_name"
 }
 
+data "aws_ssm_parameter" "db_password" {
+  name = "/${var.project_name}/${var.environment}/db_password"
+  with_decryption = true
+}
