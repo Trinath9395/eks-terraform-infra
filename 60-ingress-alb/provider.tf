@@ -1,0 +1,20 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "6.28.0"
+    }
+  }
+
+  backend "s3" {
+    bucket       = "82s-expense-tf-bucket-dev"
+    key          = "expense-infra-eks-ingress-alb"
+    region       = "us-east-1"
+    use_lockfile = true
+  }
+}
+
+provider "aws" {
+  # Configuration options
+  region = "us-east-1"
+}
