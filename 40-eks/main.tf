@@ -5,7 +5,7 @@ resource "aws_key_pair" "eks" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 21.0" # this is module version
+  version = "~> 20.0" # this is module version
 
   name = local.name
   # kubernetes_version = "1.31"
